@@ -157,9 +157,9 @@ Authenticated users should only be able to access and modify records associated 
 
 ## Author
 
-**Hari Krishna V**
+**Amirthavarshiny V**
 
-Computer Science and Engineering – Cyber Security
+Information Technology
 
 ## License
 
