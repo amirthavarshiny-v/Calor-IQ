@@ -1,79 +1,166 @@
-# CalorIQ — React + Vite + Supabase
+# CalorIQ – Personal Fitness & Nutrition Tracker
 
-CalorIQ is a personal wellness dashboard with Supabase email/password authentication, profile onboarding, and per-user private wellness data.
+**Your Health, In Focus.**
 
-## 1. Requirements
+CalorIQ is a personalized fitness and nutrition tracking application designed to help users monitor their daily health activities, manage calorie intake, track fitness goals, and build healthier habits.
 
-- Node.js 18 or newer (Node.js LTS recommended)
-- A Supabase account and project
+The application provides a personalized dashboard where users can manage their fitness information and monitor their progress through an easy-to-use interface.
 
-## 2. Install dependencies
+## Features
+
+### 🔐 User Authentication
+- User registration and login.
+- Secure email and password authentication using Supabase.
+- Individual user accounts.
+- Persistent login sessions.
+- Logout functionality.
+
+### 👤 Personal Fitness Profile
+- Full name and email.
+- Age, gender and height.
+- Current body weight.
+- Activity level.
+- Personalized fitness goals.
+
+### 🥗 Nutrition Tracking
+- Daily calorie tracking.
+- Macronutrient tracking (Protein, Carbohydrates and Fat).
+- Meal logging and management.
+- Daily nutrition overview.
+
+### 💪 Fitness Tracking
+- Daily step tracking.
+- Water intake monitoring.
+- Sleep tracking.
+- BMI screening indicator.
+- Personalized fitness dashboard.
+
+### 🔒 Data Privacy
+- Supabase database integration.
+- Row Level Security (RLS).
+- Individual user data separation.
+- Protected database access.
+
+## Tech Stack
+
+| Technology | Purpose |
+|---|---|
+| React.js | Frontend development |
+| Vite | Development server and build tool |
+| JavaScript | Application logic |
+| CSS | Styling and responsive design |
+| Supabase | Authentication and database |
+| PostgreSQL | Database management |
+| Git & GitHub | Version control |
+
+## Project Structure
+
+```text
+CalorIQ/
+│
+├── public/
+│
+├── src/
+│   ├── App.jsx
+│   ├── main.jsx
+│   ├── styles.css
+│   └── supabase.js
+│
+├── supabase-schema.sql
+├── index.html
+├── package.json
+├── package-lock.json
+├── .env.example
+├── .gitignore
+└── README.md
+```
+
+## Installation and Setup
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/CalorIQ.git
+```
+
+### 2. Navigate to the Project Directory
+
+```bash
+cd CalorIQ
+```
+
+### 3. Install Dependencies
 
 ```bash
 npm install
 ```
 
-## 3. Create your Supabase project
+### 4. Configure Supabase
 
-1. Open https://supabase.com/ and create a project.
-2. In the Supabase dashboard, open **Project Settings → API** (or **Data API / API Keys**, depending on dashboard version).
-3. Copy the **Project URL** and the **publishable key** (or legacy `anon` public key). Never use the `service_role` / secret key in a browser app.
-4. In the project root, make a copy of `.env.example` and name it `.env`.
-5. Replace the placeholders:
+Create a Supabase project at:
+
+https://supabase.com/
+
+Open the SQL Editor and execute the SQL commands from `supabase-schema.sql` to create the required database tables and security policies.
+
+### 5. Configure Environment Variables
+
+Create a `.env` file in the project root.
+
+Add your Supabase credentials:
 
 ```env
-VITE_SUPABASE_URL=https://YOUR_PROJECT_ID.supabase.co
-VITE_SUPABASE_ANON_KEY=YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY
+VITE_SUPABASE_URL=YOUR_SUPABASE_PROJECT_URL
+VITE_SUPABASE_ANON_KEY=YOUR_SUPABASE_PUBLISHABLE_KEY
 ```
 
-The publishable/anon key is intended for browser use. Database access is protected by the Row Level Security policies in the next step.
+Replace the placeholders with your actual Supabase project credentials.
 
-## 4. Create the database tables and security policies
+**Security Note:** Never expose your Supabase secret or service role key in frontend code or GitHub.
 
-1. In Supabase, open **SQL Editor → New query**.
-2. Open `supabase-schema.sql` in this project.
-3. Copy the complete SQL into the editor and click **Run**.
+### 6. Configure Authentication
 
-This creates:
+In your Supabase dashboard:
 
-- `profiles` — each user's basic profile and fitness preferences.
-- `user_data` — each user's meals, steps, water and sleep values.
-- Row Level Security (RLS) policies that restrict every row to its owner.
-- A signup trigger that creates an initial profile and wellness-data row.
+- Enable Email authentication.
+- Configure the Site URL.
+- Add your local development URL to the allowed redirect URLs.
 
-Do not disable RLS. Do not expose a service-role key in this frontend project.
+For local development:
 
-## 5. Configure email authentication
+```text
+http://localhost:5173
+```
 
-In Supabase, open **Authentication → URL Configuration**:
-
-- Set **Site URL** to `http://localhost:5173` for local development.
-- Add `http://localhost:5173/**` to the allowed redirect URLs if your dashboard asks for it.
-
-For real deployments, add your deployed domain as the Site URL / allowed redirect URL and enable the email confirmation settings you want.
-
-## 6. Run CalorIQ
-
-Stop any running Vite server, then in the project terminal:
+### 7. Run the Application
 
 ```bash
-npm install
 npm run dev
 ```
 
-Open the local URL shown by Vite (usually http://localhost:5173).
+Open the local URL displayed in your terminal.
 
-## How it works
+## Database Security
 
-- New users create an account with email and password.
-- If email confirmation is enabled in Supabase, they must confirm their email before signing in.
-- After first sign-in, they complete their profile: age, gender, height, weight, activity level and fitness goal.
-- Their profile and dashboard data are saved to Supabase and loaded for that authenticated user.
-- Sign out ends the Supabase session.
+CalorIQ uses Supabase Row Level Security (RLS) to restrict access to user-specific records.
 
-## Security notes
+Authenticated users should only be able to access and modify records associated with their own account, according to the configured database policies.
 
-- Supabase Auth handles passwords; this app never stores passwords in its own tables.
-- The frontend uses only the publishable/anon key. RLS is the security boundary for database rows.
-- `profiles.id` and `user_data.user_id` reference `auth.users(id)` and policies compare those IDs with `auth.uid()`.
-- This is a starter implementation. Before public production use, add email/password reset UX, rate limiting / abuse protection, privacy and data-retention disclosures, and review the RLS policies in the Supabase dashboard.
+## Future Enhancements
+
+- Integration with wearable fitness devices.
+- AI-powered nutrition recommendations.
+- Weekly and monthly fitness reports.
+- Food database integration.
+- Advanced fitness analytics.
+- Progress charts and personalized recommendations.
+
+## Author
+
+**Hari Krishna V**
+
+Computer Science and Engineering – Cyber Security
+
+## License
+
+This project is developed for educational and personal portfolio purposes.
